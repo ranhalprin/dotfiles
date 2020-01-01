@@ -32,6 +32,21 @@
 	# List aliases
 	aliases = config --get-regexp alias
 
+  # Nice branch formatting
+  br = for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
+
+  # Wipe current changes, but commit before so it is possible to get back to it
+  wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
+
+# Get the current branch name (not so useful in itself, but used in
+# other aliases)
+branch-name = "!git rev-parse --abbrev-ref HEAD"
+# Push the current branch to the remote "origin", and set it to track
+# the upstream branch
+publish = "!git push -u origin $(git branch-name)"
+# Delete the remote version of the current branch
+unpublish = "!git push origin :$(git branch-name)"
+
 	# Amend the currently staged files to the latest commit
 	amend = commit --amend --reuse-message=HEAD
 
